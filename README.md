@@ -63,6 +63,30 @@ The API will be available at `http://localhost:3000`
 
 Include the token as `Authorization: Bearer <token>` to access protected routes.
 
+## Threads Endpoints
+
+- `POST /threads` — Create a new thread (auth required)
+  - Headers: `Authorization: Bearer <token>`
+  - Body:
+  ```json
+  {
+    "title": "How to learn Node.js?",
+    "body": "Share your best resources and tips."
+  }
+  ```
+
+- `GET /threads` — List all threads (public)
+
+
+- `GET /threads/:id` — Get a single thread with nested comments (public)
+
+
+
+- `DELETE /threads/:id` — Delete a thread (admin only)
+  - Headers: `Authorization: Bearer <admin token>`
+
+  - Notes: Requires the requesting user to have `isAdmin: true`. Deleting a thread also removes all its comments.
+
 ## Environment Variables
 
 Copy `.env.example` to `.env` and set values:
