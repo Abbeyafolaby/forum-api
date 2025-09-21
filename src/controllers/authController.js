@@ -15,7 +15,7 @@ function signToken(user) {
 // POST /auth/signup
 async function signup(req, res, next) {
   try {
-    const { name, email, password } = req.body || {};
+    const { name, email, password, role } = req.body || {};
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Name, email and password are required' });
     }
@@ -28,7 +28,15 @@ async function signup(req, res, next) {
       return res.status(409).json({ message: 'Email already registered' });
     }
 
-    const user = await User.create({ name, email, password });
+    // Resolve role safely: only 'admin' or 'user'; default to 'user'
+    const resolvedRole = role === 'admin' ? 'admin' : 'user';
+
+    const user = await User.create({
+      name,
+      email,
+      password,
+      role: resolvedRole,
+    });
     const token = signToken(user);
     return res.status(201).json({ user, token });
   } catch (err) {

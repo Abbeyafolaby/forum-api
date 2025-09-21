@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+﻿import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema(
@@ -22,7 +22,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       minlength: 8
-    }
+    },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user'
+    },
   },
   { timestamps: true }
 );
@@ -48,5 +53,3 @@ userSchema.methods.comparePassword = async function comparePassword(candidate) {
 };
 
 export default mongoose.model('User', userSchema);
-
-

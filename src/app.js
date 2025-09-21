@@ -1,6 +1,7 @@
-import express from 'express';
+﻿import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
+import threadRoutes from './routes/threadRoutes.js';
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.get('/health', (_req, res) => {
 
 // Routes
 app.use('/auth', authRoutes);
+app.use('/threads', threadRoutes);
 
 // 404 handler
 app.use((req, res, _next) => {
@@ -30,4 +32,3 @@ app.use((err, _req, res, _next) => {
 });
 
 export default app;
-
