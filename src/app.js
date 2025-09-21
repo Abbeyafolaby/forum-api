@@ -2,6 +2,7 @@
 import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
 import threadRoutes from './routes/threadRoutes.js';
+import commentRoutes from './routes/commentRoutes.js';
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.get('/health', (_req, res) => {
 // Routes
 app.use('/auth', authRoutes);
 app.use('/threads', threadRoutes);
+app.use('/comments', commentRoutes);
 
 // 404 handler
 app.use((req, res, _next) => {

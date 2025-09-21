@@ -8,10 +8,10 @@ A comprehensive forum backend API that enables rich community discussions with t
 
 ## Features
 
-- **Threaded Comments**: Multi-level nested comment system with unlimited depth
-- **User Management**: Registration, profiles, and reputation system
-- **Discussion Topics**: Create and manage discussion threads with categories
-- **User Roles**: Different permission levels (Admin, Moderator, User)
+- Threaded Comments: Multi-level nested comment system with unlimited depth
+- User Management: Registration, profiles, and reputation system
+- Discussion Topics: Create and manage discussion threads with categories
+- User Roles: Different permission levels (Admin, Moderator, User)
 
 ## Installation & Usage
 
@@ -38,26 +38,27 @@ npm start
 ```
 
 ### Usage
-The API will be available at `http://localhost:3000`
+The API runs at `http://localhost:3000` by default.
 
 ## Auth Endpoints
 
-- `POST /auth/signup` – Register a new user
-  - Body: 
+- `POST /auth/signup` — Register a new user
+  - Body:
   ```json
-  { 
-    "name": "John Bay", 
-    "email": "johnbay@mail.com", 
-    "password": "johnspassword" 
+  {
+    "name": "John Bay",
+    "email": "johnbay@mail.com",
+    "password": "johnspassword",
+    "role": "user" // optional, accepts "admin" or "user"; defaults to "user"
   }
   ```
 
-- `POST /auth/login` – Login and receive a JWT
-  - Body: 
+- `POST /auth/login` — Login and receive a JWT
+  - Body:
   ```json
-  { 
-    "email": "johnbay@mail.com", 
-    "password": "johnspassword" 
+  {
+    "email": "johnbay@mail.com",
+    "password": "johnspassword"
   }
   ```
 
@@ -77,32 +78,33 @@ Include the token as `Authorization: Bearer <token>` to access protected routes.
 
 - `GET /threads` — List all threads (public)
 
-
-- `GET /threads/:id` — Get a single thread with nested comments (public)
-
-
-
 - `DELETE /threads/:id` — Delete a thread (admin only)
   - Headers: `Authorization: Bearer <admin token>`
+  - Notes: Requires the requesting user to have `isAdmin: true` or `role: 'admin'`. Deleting a thread also removes all its comments.
 
-  - Notes: Requires the requesting user to have `isAdmin: true`. Deleting a thread also removes all its comments.
+## Comments Endpoints
 
-## Environment Variables
+- `POST /threads/:id/comments` — Add a top-level comment to a thread (auth)
+  - Headers: `Authorization: Bearer <token>`
+  - Body:
+  ```json
+  { "content": "This is a comment" }
 
-Copy `.env.example` to `.env` and set values:
+- `POST /comments/:id/reply` — Reply to an existing comment (auth)
+  - Headers: `Authorization: Bearer <token>`
+  - Body:
+  ```json
+  { "content": "This is a reply" }
 
-- `PORT` – Server port (default: 3000)
-- `MONGODB_URI` – MongoDB connection string
-- `JWT_SECRET` – Long random string used to sign JWTs
-- `JWT_EXPIRES_IN` – Optional, default `7d`
-
-
+Notes:
+- Both comment endpoints require a non-empty `content` string.
+- Replies inherit the thread from the parent comment.
 
 ## Technologies Used
 
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
+- Node.js — Runtime environment
+- Express.js — Web framework
 
 ## Author
 
-**Abiodun Afolabi** - Backend Developer
+**Abiodun Afolabi** — Backend Developer
