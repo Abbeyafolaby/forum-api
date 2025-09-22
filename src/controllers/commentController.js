@@ -53,3 +53,36 @@ export async function replyToComment(req, res, next) {
   }
 }
 
+// POST /comments/:id/vote
+export async function voteComment(req, res, next) {
+  try {
+    const { id } = req.params; // comment id
+    let { value } = req.body || {};
+    value = Number(value);
+    if (![1, -1].includes(value)) {
+      return res.status(400).json({ message: 'Value must be 1 or -1' });
+    }
+
+    const comment = await Comment.findById(id);
+    if (!comment) return res.status(404).json({ message: 'Comment not found' });
+
+    const userId = req.user.id;
+    if (!comment.votes) comment.votes = [];
+    const existing = comment.votes.find((v) => String(v.user) === String(userId));
+
+    if (existing) {
+      if (existing.value === value) {
+        return res.status(400).json({ message: 'You have already cast this vote' });
+      }
+      existing.value = value;
+    } else {
+      comment.votes.push({ user: userId, value });
+    }
+
+    await comment.save();
+    const score = comment.votes.reduce((sum, v) => sum + (v.value || 0), 0);
+    return res.status(200).json({ commentId: comment._id, score, userVote: value });
+  } catch (err) {
+    return next(err);
+  }
+}

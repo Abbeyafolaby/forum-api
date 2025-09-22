@@ -1,11 +1,13 @@
 import express from 'express';
 import auth from '../middleware/auth.js';
-import { replyToComment } from '../controllers/commentController.js';
+import { replyToComment, voteComment } from '../controllers/commentController.js';
 
 const router = express.Router();
 
 // Reply to a comment
 router.post('/:id/reply', auth, replyToComment);
 
-export default router;
+// Vote on a comment
+router.post('/:id/vote', auth, voteComment);
 
+export default router;

@@ -82,3 +82,37 @@ export async function deleteThread(req, res, next) {
     return next(err);
   }
 }
+
+// POST /threads/:id/vote
+export async function voteThread(req, res, next) {
+  try {
+    const { id } = req.params;
+    let { value } = req.body || {};
+    value = Number(value);
+    if (![1, -1].includes(value)) {
+      return res.status(400).json({ message: 'Value must be 1 or -1' });
+    }
+
+    const thread = await Thread.findById(id);
+    if (!thread) return res.status(404).json({ message: 'Thread not found' });
+
+    const userId = req.user.id;
+    if (!thread.votes) thread.votes = [];
+    const existing = thread.votes.find((v) => String(v.user) === String(userId));
+
+    if (existing) {
+      if (existing.value === value) {
+        return res.status(400).json({ message: 'You have already cast this vote' });
+      }
+      existing.value = value;
+    } else {
+      thread.votes.push({ user: userId, value });
+    }
+
+    await thread.save();
+    const score = thread.votes.reduce((sum, v) => sum + (v.value || 0), 0);
+    return res.status(200).json({ threadId: thread._id, score, userVote: value });
+  } catch (err) {
+    return next(err);
+  }
+}

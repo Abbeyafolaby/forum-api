@@ -100,6 +100,24 @@ Notes:
 - Both comment endpoints require a non-empty `content` string.
 - Replies inherit the thread from the parent comment.
 
+## Voting Endpoints
+
+- `POST /threads/:id/vote` → Vote on a thread (auth)
+  - Headers: `Authorization: Bearer <token>`
+  - Body:
+  ```json
+  { "value": 1 }
+  ```
+  - Notes: Use `1` for upvote, `-1` for downvote. Sending the same vote twice returns 400. Sending the opposite value flips your vote.
+
+- `POST /comments/:id/vote` → Vote on a comment (auth)
+  - Headers: `Authorization: Bearer <token>`
+  - Body:
+  ```json
+  { "value": -1 }
+  ```
+  - Notes: Use `1` for upvote, `-1` for downvote. One vote per user per comment; duplicate same-value vote returns 400; opposite value flips your vote.
+
 ## Technologies Used
 
 - Node.js — Runtime environment
