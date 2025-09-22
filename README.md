@@ -1,4 +1,20 @@
 # Forum API
+**Abiodun Afolabi** — Backend Developer
+
+## Admin Moderation
+
+- GET /admin/threads � List all threads (admin only)
+  - Headers: Authorization: Bearer <admin token>
+  - Returns all threads, newest first, with author info.
+
+- DELETE /admin/comments/:id � Delete a comment (admin only)
+  - Headers: Authorization: Bearer <admin token>
+  - Deletes the target comment and its replies.
+
+Both routes require admin role via roleCheck('admin') middleware.
+
+**Abiodun Afolabi** — Backend Developer
+# Forum API
 
 Modern forum backend API with threaded comments, user discussions, and comprehensive community features.
 
@@ -122,6 +138,20 @@ Notes:
 
 - Node.js — Runtime environment
 - Express.js — Web framework
+
+## Admin Moderation
+
+- `GET /admin/threads` ? List all threads (admin only)
+  - Headers: `Authorization: Bearer <admin token>`
+  - Returns all threads, newest first, with author info.
+
+- `DELETE /admin/comments/:id` ? Delete a comment (admin only)
+  - Headers: `Authorization: Bearer <admin token>`
+  - Deletes the target comment and its replies.
+
+Both routes require the 
+ole of dmin (or isAdmin: true) via 
+oleCheck('admin') middleware.
 
 ## Author
 
