@@ -4,8 +4,8 @@ import authRoutes from './routes/authRoutes.js';
 import threadRoutes from './routes/threadRoutes.js';
 import commentRoutes from './routes/commentRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
-import { graphqlHTTP } from 'express-graphql';
-import schema from './graphql/schema.js';
+// import { graphqlHTTP } from 'express-graphql';
+// import schema from './graphql/schema.js';
 
 const app = express();
 
@@ -25,7 +25,7 @@ app.use('/comments', commentRoutes);
 app.use('/admin', adminRoutes);
 
 // GraphQL endpoint
-app.use('/graphql', graphqlHTTP({ schema, graphiql: true }));
+// app.use('/graphql', graphqlHTTP({ schema, graphiql: true }));
 
 // 404 handler
 app.use((req, res, _next) => {
